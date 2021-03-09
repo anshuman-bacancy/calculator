@@ -2,6 +2,7 @@ package controller
 
 import (
 	"calculator/models"
+	"calculator/services"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,12 +14,11 @@ func Solve(res http.ResponseWriter, req *http.Request) {
 	var data models.Data
 	json.NewDecoder(req.Body).Decode(&data)
 
-	fmt.Println(data)
 	var op1, op2, result float64
-	op1, _ = strconv.ParseFloat(data.Operator1, 64)
-	op2, _ = strconv.ParseFloat(data.Operator2, 64)
+	op1, _ = strconv.ParseFloat(data.Operand1, 64)
+	op2, _ = strconv.ParseFloat(data.Operand2, 64)
 
-	switch data.Operand {
+	switch data.Operator {
 	case "+":
 		result = op1 + op2
 	case "*":
@@ -29,8 +29,6 @@ func Solve(res http.ResponseWriter, req *http.Request) {
 		result = op1 - op2
 	}
 
-	fmt.Println(result)
-	json.NewEncoder(res).Encode(struct {
-		Result string `json:"result"`
-	}{fmt.Sprint(result)})
+	services.Save(data, result)
+	json.NewEncoder(res).Encode(struct{ Result string `json:"result"`}{fmt.Sprint(result)})
 }

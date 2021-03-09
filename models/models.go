@@ -1,7 +1,8 @@
 package models
 
 type Data struct {
-  Operator1 string `json:"val1"`
-  Operator2 string `json:"val2"`
-  Operand string `json:"op"`
+  Operand1 string `json:"val1"`
+  Operand2 string `json:"val2"`
+  Operator string `json:"op"`
 }
+
